@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Savoré — Where Every Bite Becomes a Memory</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --gold: #C9A84C;
+      --gold-light: #E2C47A;
+      --gold-dim: #7a6330;
+      --black: #0a0a0a;
+      --dark: #111111;
+      --dark2: #1a1a1a;
+      --terra: #8B5E3C;
+      --cream: #F5EDD6;
+      --text-muted: #888;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--cream);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--black); }
+    ::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 2px; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 24px 60px;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.85), transparent);
+      transition: background 0.4s;
+    }
+    nav.scrolled { background: rgba(10,10,10,0.97); border-bottom: 1px solid rgba(201,168,76,0.15); }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem; font-weight: 600; color: var(--gold);
+      letter-spacing: 4px; text-decoration: none;
+    }
+    .nav-logo span { font-style: italic; font-weight: 300; }
+
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      color: var(--cream); text-decoration: none;
+      font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase;
+      transition: color 0.3s; position: relative;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 1px; background: var(--gold); transition: width 0.3s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-links a:hover::after { width: 100%; }
+
+    .nav-reserve {
+      background: transparent; border: 1px solid var(--gold);
+      color: var(--gold); padding: 10px 24px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.65rem; letter-spacing: 3px; text-transform: uppercase;
+      cursor: pointer; transition: all 0.3s; text-decoration: none;
+    }
+    .nav-reserve:hover { background: var(--gold); color: var(--black); }
+
+    /* ── HERO ── */
+    #home {
+      height: 100vh; position: relative;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(139,94,60,0.15) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(201,168,76,0.08) 0%, transparent 50%),
+        linear-gradient(135deg, #0a0a0a 0%, #1a1209 50%, #0a0a0a 100%);
+    }
+
+    .hero-pattern {
+      position: absolute; inset: 0; opacity: 0.03;
+      background-image: repeating-linear-gradient(
+        45deg, var(--gold) 0, var(--gold) 1px, transparent 0, transparent 50%
+      );
+      background-size: 20px 20px;
+    }
+
+    .hero-content {
+      position: relative; text-align: center; z-index: 2;
+      animation: fadeUp 1.2s ease both;
+    }
+
+    .hero-pre {
+      font-size: 0.65rem; letter-spacing: 6px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 24px;
+      display: flex; align-items: center; justify-content: center; gap: 16px;
+    }
+    .hero-pre::before, .hero-pre::after {
+      content: ''; width: 40px; height: 1px; background: var(--gold-dim);
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(5rem, 12vw, 10rem);
+      font-weight: 300; line-height: 0.9;
+      color: var(--cream); letter-spacing: 8px;
+    }
+    .hero-title em {
+      font-style: italic; color: var(--gold); display: block;
+      font-size: clamp(5.5rem, 13vw, 11rem);
+    }
+
+    .hero-tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem; font-style: italic;
+      color: rgba(245,237,214,0.6); margin: 28px 0 48px;
+      letter-spacing: 2px;
+    }
+
+    .hero-cta {
+      display: inline-flex; gap: 20px; flex-wrap: wrap; justify-content: center;
+    }
+
+    .btn-primary {
+      background: var(--gold); color: var(--black);
+      padding: 16px 44px; text-decoration: none;
+      font-size: 0.65rem; letter-spacing: 4px; text-transform: uppercase;
+      font-weight: 600; transition: all 0.3s;
+    }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+    .btn-secondary {
+      background: transparent; color: var(--cream);
+      border: 1px solid rgba(245,237,214,0.3);
+      padding: 16px 44px; text-decoration: none;
+      font-size: 0.65rem; letter-spacing: 4px; text-transform: uppercase;
+      transition: all 0.3s;
+    }
+    .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
+
+    .hero-scroll {
+      position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      color: var(--text-muted); font-size: 0.6rem; letter-spacing: 3px;
+      text-transform: uppercase; animation: bounce 2s infinite;
+    }
+    .hero-scroll::after {
+      content: ''; width: 1px; height: 40px;
+      background: linear-gradient(to bottom, var(--gold-dim), transparent);
+    }
+
+    /* ── SECTION COMMON ── */
+    section { padding: 120px 60px; }
+
+    .section-label {
+      font-size: 0.6rem; letter-spacing: 5px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 16px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .section-label::before { content: ''; width: 30px; height: 1px; background: var(--gold-dim); }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 5vw, 4.5rem);
+      font-weight: 300; line-height: 1.1;
+      color: var(--cream); margin-bottom: 24px;
+    }
+    .section-title em { font-style: italic; color: var(--gold); }
+
+    .divider {
+      width: 60px; height: 1px;
+      background: linear-gradient(to right, var(--gold), transparent);
+      margin: 32px 0;
+    }
+
+    /* ── FEATURED DISHES ── */
+    #featured { background: var(--dark); }
+
+    .featured-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 2px; margin-top: 60px;
+    }
+
+    .dish-card {
+      position: relative; overflow: hidden;
+      height: 480px; cursor: pointer;
+    }
+    .dish-card:first-child { grid-row: span 2; height: auto; min-height: 500px; }
+
+    .dish-bg {
+      position: absolute; inset: 0;
+      transition: transform 0.6s ease;
+    }
+    .dish-card:hover .dish-bg { transform: scale(1.05); }
+
+    .dish-card:nth-child(1) .dish-bg { background: linear-gradient(135deg, #2d1a0e 0%, #4a2c1a 40%, #1a0f08 100%); }
+    .dish-card:nth-child(2) .dish-bg { background: linear-gradient(135deg, #1a1205 0%, #2d2008 100%); }
+    .dish-card:nth-child(3) .dish-bg { background: linear-gradient(135deg, #0f1a0e 0%, #1a2d1a 100%); }
+    .dish-card:nth-child(4) .dish-bg { background: linear-gradient(135deg, #1a0e0e 0%, #2d1a0e 100%); }
+
+    .dish-emoji {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -70%);
+      font-size: 5rem; opacity: 0.6;
+      transition: transform 0.6s, opacity 0.4s;
+    }
+    .dish-card:hover .dish-emoji { transform: translate(-50%, -75%); opacity: 0.9; }
+
+    .dish-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 60%);
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 36px;
+    }
+
+    .dish-tag {
+      font-size: 0.55rem; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 8px;
+    }
+    .dish-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem; font-weight: 400; color: var(--cream);
+      margin-bottom: 8px;
+    }
+    .dish-desc { font-size: 0.75rem; color: var(--text-muted); line-height: 1.6; }
+
+    /* ── ABOUT ── */
+    #about {
+      background: var(--black);
+      display: grid; grid-template-columns: 1fr 1fr; gap: 100px;
+      align-items: center;
+    }
+
+    .about-visual {
+      position: relative; height: 600px;
+    }
+    .about-frame {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, #2d1a0e, #1a0f05);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 8rem; opacity: 0.5;
+    }
+    .about-accent {
+      position: absolute; bottom: -20px; right: -20px;
+      width: 200px; height: 200px;
+      border: 1px solid rgba(201,168,76,0.2);
+    }
+    .about-accent2 {
+      position: absolute; top: -20px; left: -20px;
+      width: 100px; height: 100px;
+      border: 1px solid rgba(201,168,76,0.1);
+    }
+
+    .about-text p {
+      font-size: 0.9rem; line-height: 1.9;
+      color: rgba(245,237,214,0.7); margin-bottom: 20px;
+    }
+
+    .about-stats {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 32px; margin-top: 48px;
+      padding-top: 48px;
+      border-top: 1px solid rgba(201,168,76,0.15);
+    }
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3rem; color: var(--gold); line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.65rem; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    /* ── MENU ── */
+    #menu { background: var(--dark2); }
+
+    .menu-tabs {
+      display: flex; gap: 0; margin: 48px 0;
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+    }
+    .menu-tab {
+      padding: 14px 32px; background: none; border: none;
+      color: var(--text-muted); font-family: 'Montserrat', sans-serif;
+      font-size: 0.65rem; letter-spacing: 3px; text-transform: uppercase;
+      cursor: pointer; transition: all 0.3s;
+      border-bottom: 2px solid transparent; margin-bottom: -1px;
+    }
+    .menu-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+    .menu-tab:hover { color: var(--cream); }
+
+    .menu-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+    }
+
+    .menu-item {
+      padding: 28px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+      display: flex; justify-content: space-between; align-items: start;
+      gap: 20px; transition: padding 0.3s;
+    }
+    .menu-item:hover { padding-left: 8px; }
+
+    .menu-item-left { flex: 1; }
+    .menu-item-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem; color: var(--cream); margin-bottom: 6px;
+    }
+    .menu-item-desc { font-size: 0.72rem; color: var(--text-muted); line-height: 1.6; }
+    .menu-item-tag {
+      font-size: 0.5rem; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--gold); background: rgba(201,168,76,0.1);
+      padding: 3px 8px; border-radius: 2px; margin-top: 8px; display: inline-block;
+    }
+    .menu-item-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem; color: var(--gold); white-space: nowrap;
+    }
+
+    .menu-section { display: none; }
+    .menu-section.active { display: grid; grid-template-columns: 1fr 1fr; gap: 0 60px; }
+
+    /* ── RESERVATIONS ── */
+    #reservations {
+      background: var(--black);
+      display: grid; grid-template-columns: 1fr 1fr; gap: 100px;
+      align-items: center;
+    }
+
+    .reserve-form { display: flex; flex-direction: column; gap: 20px; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    .form-group { display: flex; flex-direction: column; gap: 8px; }
+    .form-group label {
+      font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gold);
+    }
+    .form-group input, .form-group select, .form-group textarea {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(201,168,76,0.2);
+      color: var(--cream); padding: 14px 18px;
+      font-family: 'Montserrat', sans-serif; font-size: 0.85rem;
+      outline: none; transition: border 0.3s;
+      appearance: none; -webkit-appearance: none;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      border-color: var(--gold);
+    }
+    .form-group select option { background: var(--dark2); }
+    .form-group textarea { resize: none; height: 100px; }
+
+    .btn-submit {
+      background: var(--gold); color: var(--black);
+      padding: 18px; border: none; cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.65rem; letter-spacing: 4px; text-transform: uppercase;
+      font-weight: 600; transition: all 0.3s; margin-top: 8px;
+    }
+    .btn-submit:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+    .reserve-info { }
+    .info-block { margin-bottom: 48px; }
+    .info-block h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem; color: var(--cream); margin-bottom: 16px;
+    }
+    .info-block p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.8; }
+    .info-block strong { color: var(--gold); }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--dark); text-align: center; }
+
+    .contact-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 60px; margin-top: 60px;
+    }
+    .contact-card {
+      padding: 40px 30px;
+      border: 1px solid rgba(201,168,76,0.1);
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .contact-card:hover { border-color: rgba(201,168,76,0.4); transform: translateY(-4px); }
+
+    .contact-icon { font-size: 2rem; margin-bottom: 20px; }
+    .contact-card h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem; color: var(--cream); margin-bottom: 12px;
+    }
+    .contact-card p { font-size: 0.8rem; color: var(--text-muted); line-height: 1.8; }
+    .contact-card a { color: var(--gold); text-decoration: none; font-size: 0.8rem; }
+
+    .social-links {
+      display: flex; justify-content: center; gap: 20px; margin-top: 60px;
+    }
+    .social-link {
+      width: 46px; height: 46px;
+      border: 1px solid rgba(201,168,76,0.2);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-muted); text-decoration: none; font-size: 0.75rem;
+      transition: all 0.3s;
+    }
+    .social-link:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--black);
+      border-top: 1px solid rgba(201,168,76,0.1);
+      padding: 40px 60px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; color: var(--gold); letter-spacing: 4px;
+    }
+    .footer-copy { font-size: 0.7rem; color: var(--text-muted); }
+    .footer-tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; color: var(--text-muted); font-size: 0.85rem;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(6px); }
+    }
+
+    .reveal {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 20px 24px; }
+      .nav-links { display: none; }
+      section { padding: 80px 24px; }
+      #about, #reservations { grid-template-columns: 1fr; gap: 48px; }
+      .about-visual { height: 300px; }
+      .featured-grid { grid-template-columns: 1fr; }
+      .dish-card:first-child { min-height: 300px; }
+      .menu-section.active { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; gap: 24px; }
+      footer { flex-direction: column; gap: 16px; text-align: center; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a class="nav-logo" href="#home">Savor<span>é</span></a>
+  <ul class="nav-links">
+    <li><a href="#featured">Dishes</a></li>
+    <li><a href="#about">Our Story</a></li>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#reservations" class="nav-reserve">Reserve a Table</a>
+</nav>
+
+<!-- HERO -->
+<section id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-pattern"></div>
+  <div class="hero-content">
+    <div class="hero-pre">Fine Dining · African Fusion</div>
+    <h1 class="hero-title">
+      SAVOR<em>É</em>
+    </h1>
+    <p class="hero-tagline">Where Every Bite Becomes a Memory.</p>
+    <div class="hero-cta">
+      <a href="#menu" class="btn-primary">Explore Our Menu</a>
+      <a href="#reservations" class="btn-secondary">Reserve a Table</a>
+    </div>
+  </div>
+  <div class="hero-scroll">Scroll</div>
+</section>
+
+<!-- FEATURED DISHES -->
+<section id="featured">
+  <div class="reveal">
+    <div class="section-label">Signature Creations</div>
+    <h2 class="section-title">Crafted with <em>Passion</em></h2>
+  </div>
+  <div class="featured-grid reveal">
+    <div class="dish-card">
+      <div class="dish-bg"></div>
+      <div class="dish-emoji">🥩</div>
+      <div class="dish-overlay">
+        <div class="dish-tag">Chef's Signature</div>
+        <div class="dish-name">Suya-Glazed Wagyu</div>
+        <div class="dish-desc">Tender wagyu beef, kissed with our house suya spice blend, finished with a tamarind reduction and crispy plantain</div>
+      </div>
+    </div>
+    <div class="dish-card">
+      <div class="dish-bg"></div>
+      <div class="dish-emoji">🦞</div>
+      <div class="dish-overlay">
+        <div class="dish-tag">From the Sea</div>
+        <div class="dish-name">Lobster Egusi Bisque</div>
+        <div class="dish-desc">West African egusi reimagined as a velvety bisque, crowned with butter-poached lobster tail</div>
+      </div>
+    </div>
+    <div class="dish-card">
+      <div class="dish-bg"></div>
+      <div class="dish-emoji">🌿</div>
+      <div class="dish-overlay">
+        <div class="dish-tag">Garden Fresh</div>
+        <div class="dish-name">Heritage Garden Plate</div>
+        <div class="dish-desc">Seasonal vegetables roasted over open flame, drizzled with a moringa-infused oil</div>
+      </div>
+    </div>
+    <div class="dish-card">
+      <div class="dish-bg"></div>
+      <div class="dish-emoji">🍮</div>
+      <div class="dish-overlay">
+        <div class="dish-tag">Sweet Endings</div>
+        <div class="dish-name">Chin-Chin Crème Brûlée</div>
+        <div class="dish-desc">Classic French crème brûlée infused with cardamom and topped with artisanal chin-chin crumble</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-visual reveal">
+    <div class="about-frame">🍽️</div>
+    <div class="about-accent"></div>
+    <div class="about-accent2"></div>
+  </div>
+  <div class="about-text reveal">
+    <div class="section-label">Our Story</div>
+    <h2 class="section-title">Where Heritage <em>Meets</em> Innovation</h2>
+    <div class="divider"></div>
+    <p>Savoré was born from a deep reverence for Africa's rich culinary heritage — the bold spices, the communal spirit, the stories passed through generations around a shared meal.</p>
+    <p>We believe that food is more than nourishment. It is culture, identity, and memory. Every dish on our menu is a celebration of that belief — honoring traditional flavors while embracing the artistry of modern culinary technique.</p>
+    <p>Our kitchen is led by chefs who have trained across the world, bringing global perspectives back home to tell a uniquely African story on the plate.</p>
+    <div class="about-stats">
+      <div>
+        <div class="stat-num">12+</div>
+        <div class="stat-label">Years of Craft</div>
+      </div>
+      <div>
+        <div class="stat-num">40+</div>
+        <div class="stat-label">Signature Dishes</div>
+      </div>
+      <div>
+        <div class="stat-num">5★</div>
+        <div class="stat-label">Guest Rating</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section id="menu">
+  <div class="reveal">
+    <div class="section-label">Culinary Journey</div>
+    <h2 class="section-title">Our <em>Menu</em></h2>
+  </div>
+  <div class="menu-tabs reveal">
+    <button class="menu-tab active" onclick="switchTab('starters', this)">Starters</button>
+    <button class="menu-tab" onclick="switchTab('mains', this)">Main Course</button>
+    <button class="menu-tab" onclick="switchTab('desserts', this)">Desserts</button>
+    <button class="menu-tab" onclick="switchTab('drinks', this)">Drinks</button>
+  </div>
+
+  <div id="starters" class="menu-section active reveal">
+    <div class="menu-item">
+      <div class="menu-item-left">
+        <div class="menu-item-name">Suya Bruschetta</div>
+        <div class="menu-item-desc">Artisan bread, spiced beef crumble, roasted pepper coulis</div>
+        <span class="menu-item-tag">Signature</span>
+      </div>
+      <div class="menu-item-price">₦8,500</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-left">
+        <div class="menu-item-name">Pepper Soup Consommé</div>
+        <div class="menu-item-desc">Clear catfish broth, aromatic spices, herb oil</div>
+      </div>
+      <div class="menu-item-price">₦7,200</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-left">
+        <div class="menu-item-name">Plantain Tatin</div>
+        <div class="menu-item-desc">Caramelized ripe plantain, goat cheese, honey drizzle</div>
+        <span class="menu-item-tag">Chef's Pick</span>
+      </div>
+      <div class="menu-item-price">₦6,800</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-left">
+        <div class="menu-item-name">Smoked Oysters</div>
+        <div class="menu-item-desc">Freshly smoked oysters, shito mignonette, crispy shallots</div>
+      </div>
+      <div class="menu-item-price">₦11,000</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-left">
+        <div class="menu-item-name">Edikang Ikong Tart</div>
+        <div class="menu-item-desc">Buttery pastry shell filled with a refined vegetable medley</div>
+      </div>
+      <div class="menu-item-price">₦7,500</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-left">
+        <div class="menu-item-name">Akara Bites</div>
+        <div class="menu-item-desc">Crispy bean fritters, smoked tomato dip, micro greens</div>
+      </div>
+      <div class="menu-item-price">₦5,500</div>
+    </div>
+  </div>
+
+  <div id="mains" class="menu-section">
+    <div class="menu-item">
+      <div class="menu-item-left">
+        <div class="menu-item-name">Suya-Glazed Wagyu</div>
+        <div class="menu-item-desc">Wagyu tenderloin, suya spice, tamarind jus, plantain crisps</div>
+        <span class="menu-item-tag">Signature</span>
+      </div>
+      <div class="menu-item-price">₦45,000</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-left">
+        <div class="menu-item-name">Lobster Egusi Bisque</div>
+        <div class="menu-item-desc">Butter-poached lobster, egusi cream, pumpkin leaf oil</div>
+        <span class="menu-item-tag">Chef's Pick</span>
+      </div>
+      <div class="menu-item-price">₦38,000</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-left">
+        <div class="menu-item-name">Ofada Risotto</div>
+        <div class="menu-item-desc">Ofada rice, native sauce, slow-cooked oxtail, parmesan</div>
+      </div>
+      <div class="menu-item-price">₦22,000</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-left">
+        <div class="menu-item-name">Jollof Wellington</div>
+        <div class="menu-item-desc">Beef Wellington reimagined with jollof-spiced duxelles</div>
+        <span class="menu-item-tag">Signature</span>
+      </div>
+      <div class="menu-item-price">₦32,000</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-left">
+        <div class="menu-item-name">Herb-Crusted Sea Bass</div>
+        <div class="menu-item-desc">Pan-seared sea bass, banga sauce, coconut jasmine rice</div>
+      </div>
+      <div class="menu-item-price">₦28,000</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-left">
+        <div class="menu-item-name">Heritage Garden Plate</div>
+        <div class="menu-item-desc">Seasonal vegetables, moringa oil, ancient grain pilaf</div>
+        <span class="menu-item-tag">Vegan</span>
+      </div>
+      <div class="menu-item-price">₦18,500</div>
+    </div>
+  </div>
+
+  <div id="desserts" class="menu-section">
+    <div class="menu-item">
+      <div class="menu-item-left">
+        <div class="menu-item-name">Chin-Chin Crème Brûlée</div>
+        <div class="menu-item-desc">Cardamom custard, artisanal chin-chin crumble, gold leaf</div>
+        <span class="menu-item-tag">Signature</span>
+      </div>
+      <div class="menu-item-price">₦9,500</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-left">
+        <div class="menu-item-name">Zobo Panna Cotta</div>
+        <div class="menu-item-desc">Hibiscus-infused panna cotta, ginger syrup, berry compote</div>
+      </div>
+      <div class="menu-item-price">₦8,200</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-left">
+        <div class="menu-item-name">Dark Chocolate Fondant</div>
+        <div class="menu-item-desc">72% Ghanaian chocolate, tiger nut ice cream, praline</div>
+        <span class="menu-item-tag">Chef's Pick</span>
+      </div>
+      <div class="menu-item-price">₦10,000</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-left">
+        <div class="menu-item-name">Baobab Cheesecake</div>
+        <div class="menu-item-desc">Creamy baobab filling, ginger biscuit base, caramel sauce</div>
+      </div>
+      <div class="menu-item-price">₦8,800</div>
+    </div>
+  </div>
+
+  <div id="drinks" class="menu-section">
+    <div class="menu-item">
+      <div class="menu-item-left">
+        <div class="menu-item-name">Savoré Signature Cocktail</div>
+        <div class="menu-item-desc">Zobo, rum, fresh lime, ginger beer, edible gold dust</div>
+        <span class="menu-item-tag">Signature</span>
+      </div>
+      <div class="menu-item-price">₦12,000</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-left">
+        <div class="menu-item-name">African Sunset Spritz</div>
+        <div class="menu-item-desc">Tamarind, prosecco, orange bitters, dehydrated citrus</div>
+      </div>
+      <div class="menu-item-price">₦10,500</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-left">
+        <div class="menu-item-name">Tiger Nut Latte</div>
+        <div class="menu-item-desc">House-made tiger nut milk, espresso, cinnamon foam</div>
+        <span class="menu-item-tag">Non-Alcoholic</span>
+      </div>
+      <div class="menu-item-price">₦6,500</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-left">
+        <div class="menu-item-name">Premium Wine Selection</div>
+        <div class="menu-item-desc">Ask your sommelier for our curated cellar selection</div>
+      </div>
+      <div class="menu-item-price">From ₦25,000</div>
+    </div>
+  </div>
+</section>
+
+<!-- RESERVATIONS -->
+<section id="reservations">
+  <div class="reveal">
+    <div class="section-label">Book Your Experience</div>
+    <h2 class="section-title">Reserve <em>Your Table</em></h2>
+    <div class="divider"></div>
+    <div class="reserve-info">
+      <div class="info-block">
+        <h4>Opening Hours</h4>
+        <p>
+          <strong>Monday – Thursday</strong><br>12:00 PM – 10:00 PM<br><br>
+          <strong>Friday – Saturday</strong><br>12:00 PM – 12:00 AM<br><br>
+          <strong>Sunday</strong><br>1:00 PM – 9:00 PM
+        </p>
+      </div>
+      <div class="info-block">
+        <h4>Private Dining</h4>
+        <p>For groups of 10 or more, or exclusive private events, contact our events team directly at <strong>events@savore.com</strong></p>
+      </div>
+      <div class="info-block">
+        <h4>Dress Code</h4>
+        <p>We kindly request <strong>smart casual to formal</strong> attire to match the Savoré experience.</p>
+      </div>
+    </div>
+  </div>
+  <div class="reveal">
+    <form class="reserve-form" onsubmit="handleReservation(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" placeholder="John" required />
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" placeholder="Doe" required />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" placeholder="john@example.com" required />
+        </div>
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="tel" placeholder="+234 800 000 0000" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Date</label>
+          <input type="date" required />
+        </div>
+        <div class="form-group">
+          <label>Time</label>
+          <select required>
+            <option value="">Select time</option>
+            <option>12:00 PM</option>
+            <option>1:00 PM</option>
+            <option>2:00 PM</option>
+            <option>6:00 PM</option>
+            <option>7:00 PM</option>
+            <option>8:00 PM</option>
+            <option>9:00 PM</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Number of Guests</label>
+        <select required>
+          <option value="">Select guests</option>
+          <option>1 Guest</option>
+          <option>2 Guests</option>
+          <option>3 Guests</option>
+          <option>4 Guests</option>
+          <option>5 Guests</option>
+          <option>6+ Guests (call us)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Special Requests</label>
+        <textarea placeholder="Dietary requirements, special occasions, seating preferences..."></textarea>
+      </div>
+      <button type="submit" class="btn-submit">Confirm Reservation</button>
+    </form>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="reveal">
+    <div class="section-label" style="justify-content:center">Find Us</div>
+    <h2 class="section-title">Come <em>Visit Us</em></h2>
+  </div>
+  <div class="contact-grid reveal">
+    <div class="contact-card">
+      <div class="contact-icon">📍</div>
+      <h4>Location</h4>
+      <p>14 Refined Street<br>Victoria Island, Lagos<br>Nigeria</p>
+    </div>
+    <div class="contact-card">
+      <div class="contact-icon">📞</div>
+      <h4>Reservations</h4>
+      <p>
+        <a href="tel:+2348000000000">+234 800 000 0000</a><br><br>
+        <a href="mailto:hello@savore.com">hello@savore.com</a>
+      </p>
+    </div>
+    <div class="contact-card">
+      <div class="contact-icon">🕐</div>
+      <h4>Hours</h4>
+      <p>Mon–Thu: 12PM – 10PM<br>Fri–Sat: 12PM – 12AM<br>Sunday: 1PM – 9PM</p>
+    </div>
+  </div>
+  <div class="social-links reveal">
+    <a class="social-link" href="#">IG</a>
+    <a class="social-link" href="#">FB</a>
+    <a class="social-link" href="#">TW</a>
+    <a class="social-link" href="#">YT</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Savoré</div>
+  <div class="footer-tagline">Where Every Bite Becomes a Memory.</div>
+  <div class="footer-copy">© 2026 Savoré. All rights reserved.</div>
+</footer>
+
+<script>
+  // Navbar scroll effect
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Menu tabs
+  function switchTab(id, btn) {
+    document.querySelectorAll('.menu-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  // Reservation form
+  function handleReservation(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('.btn-submit');
+    btn.textContent = '✓ Reservation Confirmed!';
+    btn.style.background = '#4a7c59';
+    setTimeout(() => {
+      btn.textContent = 'Confirm Reservation';
+      btn.style.background = '';
+      e.target.reset();
+    }, 3000);
+  }
+</script>
+</body>
+</html>
