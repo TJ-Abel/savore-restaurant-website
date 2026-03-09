@@ -4,7 +4,7 @@
 
 ### *Where Every Bite Becomes a Memory.*
 
-[![Live Site](https://img.shields.io/badge/🌐%20Live%20Site-tj.ddns.net-C9A84C?style=for-the-badge)](http://tj.ddns.net)
+[![Live Site](https://img.shields.io/badge/🌐%20Live%20Site-tjabelworks.ddns.net-C9A84C?style=for-the-badge)](http://tjabelworks.ddns.net)
 [![GitHub Repo](https://img.shields.io/badge/GitHub-TJ--Abel-181717?style=for-the-badge&logo=github)](https://github.com/TJ-Abel/savore-restaurant-website)
 [![Documentation](https://img.shields.io/badge/📄%20Full%20Docs-Google%20Docs-4285F4?style=for-the-badge&logo=googledocs&logoColor=white)](https://docs.google.com/document/d/1WgXn0Shxc3-0mpp6HGNboIaLZOhoTuCL/edit?usp=sharing&ouid=103227920438659480697&rtpof=true&sd=true)
 
@@ -43,7 +43,7 @@ A **full-stack cloud deployment project** — from zero to a live luxury restaur
 
 ## 🌐 Live Demo
 
-> 👉 **[http://tj.ddns.net](http://tj.ddns.net)**
+> 👉 **[http://tjabelworks.ddns.net](http://tjabelworks.ddns.net)**
 
 The site is live and publicly accessible, hosted on a real Ubuntu server on Google Cloud Platform.
 
@@ -118,9 +118,9 @@ In Google Cloud Console:
 - Enabled ✅ **Allow HTTP traffic** (port 80)
 
 ### 7. Set Up a Custom Domain
-- Registered a free hostname at **No-IP** (`tj.ddns.net`)
+- Registered a free hostname at **No-IP** (`tjabelworks.ddns.net`)
 - Created an **A Record** pointing to the VM's external IP: `34.122.36.57`
-- Website became accessible at `http://tj.ddns.net`
+- Website became accessible at `http://tjabelworks.ddns.net`
 
 ---
 
@@ -204,7 +204,7 @@ Here's my roadmap for making this project even better:
 | Zone | us-central1-a |
 | Web Server | Apache2 v2.4.58 |
 | External IP | 34.122.36.57 |
-| Domain | tj.ddns.net |
+| Domain | tjabelworks.ddns.net |
 
 ---
 
