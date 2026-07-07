@@ -43,7 +43,7 @@ A **full-stack cloud deployment project** — from zero to a live luxury restaur
 
 ## 🌐 Live Demo
 
-> 👉 **[http://tjabelworks.ddns.net](http://tjabelworks.ddns.net)**
+> 👉 **[http://tjabelworks.ddns.net](http://tjabelworks.ddns.net)**  , [https://tj-abel.github.io/savore-restaurant-website/]
 
 The site is live and publicly accessible, hosted on a real Ubuntu server on Google Cloud Platform.
 
